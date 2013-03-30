@@ -87,16 +87,16 @@ class TVsubtitles(ServiceBase):
         return self.query(video.path or video.release, languages, video.series, video.season, video.episode)
 
     def query(self, filepath, languages, series, season, episode):
-        logger.debug(u'Getting subtitles for %s season %d episode %d with languages %r' % (series, season, episode, languages))
+        logger.debug('Getting subtitles for %s season %d episode %d with languages %r' % (series, season, episode, languages))
         # find the show id
         show_id = self.get_show_id(series.lower())
         if not show_id:
-            logger.debug(u'Could not find show id')
+            logger.debug('Could not find show id')
             return []
         # load episode ids
         episode_ids = self.get_episode_ids(show_id, season)
         if episode not in episode_ids:
-            logger.debug(u'Could not find episode id')
+            logger.debug('Could not find episode id')
             return []
         episode_id = episode_ids[episode]
         # query with the episode id
@@ -110,7 +110,7 @@ class TVsubtitles(ServiceBase):
             # filter on languages
             sub_language = self.get_language(re.match('^images/flags/(\w+)\.gif$', a.h5.img['src']).group(1))
             if sub_language not in languages:
-                logger.debug(u'Language %r not in wanted languages %r' % (sub_language, languages))
+                logger.debug('Language %r not in wanted languages %r' % (sub_language, languages))
                 continue
             # get keywords
             sub_keywords = set()

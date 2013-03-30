@@ -96,7 +96,7 @@ class PodnapisiWeb(ServiceBase):
         soup = BeautifulSoup(r.content, self.required_features)
         for sub in soup('subtitle'):
             if 'n' in sub.flags:
-                logger.debug(u'Skipping hearing impaired')
+                logger.debug('Skipping hearing impaired')
                 continue
             language = self.get_language(int(sub.languageId.text))
             confidence = float(sub.rating.text) / 5.0

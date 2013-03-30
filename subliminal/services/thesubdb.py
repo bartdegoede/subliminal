@@ -43,7 +43,7 @@ class TheSubDB(ServiceBase):
         r = self.session.get(self.server_url, timeout=self.timeout,
                              params={'action': 'search', 'hash': moviehash})
         if r.status_code == 404:
-            logger.debug(u'Could not find subtitles for hash %s' % moviehash)
+            logger.debug('Could not find subtitles for hash %s' % moviehash)
             return []
         if r.status_code != 200:
             logger.error(u'Request %s returned status code %d' % (r.url, r.status_code))
@@ -51,7 +51,7 @@ class TheSubDB(ServiceBase):
         available_languages = language_set(r.content.split(','))
         languages &= available_languages
         if not languages:
-            logger.debug(u'Could not find subtitles for hash %s with languages %r (only %r available)' % (moviehash, languages, available_languages))
+            logger.debug('Could not find subtitles for hash %s with languages %r (only %r available)' % (moviehash, languages, available_languages))
             return []
         subtitles = []
         for language in languages:

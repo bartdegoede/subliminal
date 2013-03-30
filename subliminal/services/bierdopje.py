@@ -48,7 +48,7 @@ class BierDopje(ServiceBase):
             return None
         soup = BeautifulSoup(r.content, self.required_features)
         if soup.status.contents[0] == 'false':
-            logger.debug(u'Could not find show %s' % series)
+            logger.debug('Could not find show %s' % series)
             return None
         return int(soup.showid.contents[0])
 
@@ -67,7 +67,7 @@ class BierDopje(ServiceBase):
             raise ServiceError('One or more parameter missing')
         subtitles = []
         for language in languages:
-            logger.debug(u'Getting subtitles for %s %d season %d episode %d with language %s' % (request_source, request_id, season, episode, language.alpha2))
+            logger.debug('Getting subtitles for %s %d season %d episode %d with language %s' % (request_source, request_id, season, episode, language.alpha2))
             r = self.session.get('%sGetAllSubsFor/%s/%s/%s/%s/%s' % (self.server_url, request_id, season, episode, language.alpha2, request_is_tvdbid),
                                  timeout=self.timeout)
             if r.status_code != 200:
@@ -75,7 +75,7 @@ class BierDopje(ServiceBase):
                 return []
             soup = BeautifulSoup(r.content, self.required_features)
             if soup.status.contents[0] == 'false':
-                logger.debug(u'Could not find subtitles for %s %d season %d episode %d with language %s' % (request_source, request_id, season, episode, language.alpha2))
+                logger.debug('Could not find subtitles for %s %d season %d episode %d with language %s' % (request_source, request_id, season, episode, language.alpha2))
                 continue
             path = get_subtitle_path(filepath, language, self.multi)
             for result in soup.results('result'):

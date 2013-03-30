@@ -62,10 +62,10 @@ class Addic7ed(ServiceBase):
         return self.query(video.path or video.release, video.series, video.season, video.episode, languages)
 
     def query(self, filepath, series, season, episode, languages):
-        logger.debug(u'Getting subtitles for %s season %d episode %d with languages %r' % (series, season, episode, languages))
+        logger.debug('Getting subtitles for %s season %d episode %d with languages %r' % (series, season, episode, languages))
         show_ids = self.get_show_ids()
         if series.lower() not in show_ids:
-            logger.debug(u'Could not find show id for %s' % series)
+            logger.debug('Could not find show id for %s' % series)
             return []
         show_id = show_ids[series.lower()]
         r = self.session.get('%s/show/%d&season=%d' % (self.server_url, show_id, season), timeout=self.timeout)
@@ -76,15 +76,15 @@ class Addic7ed(ServiceBase):
             if int(cells[0].text.strip()) != season or int(cells[1].text.strip()) != episode:
                 continue
             if cells[6].text.strip():
-                logger.debug(u'Skipping hearing impaired')
+                logger.debug('Skipping hearing impaired')
                 continue
             sub_status = cells[5].text.strip()
             if sub_status != 'Completed':
-                logger.debug(u'Wrong subtitle status %s' % sub_status)
+                logger.debug('Wrong subtitle status %s' % sub_status)
                 continue
             sub_language = self.get_language(cells[3].text.strip())
             if sub_language not in languages:
-                logger.debug(u'Language %r not in wanted languages %r' % (sub_language, languages))
+                logger.debug('Language %r not in wanted languages %r' % (sub_language, languages))
                 continue
             sub_keywords = split_keyword(cells[4].text.strip().lower())
             sub_link = '%s/%s' % (self.server_url, cells[9].a['href'])
@@ -107,7 +107,7 @@ class Addic7ed(ServiceBase):
             if os.path.exists(subtitle.path):
                 os.remove(subtitle.path)
             raise DownloadFailedError(str(e))
-        logger.debug(u'Download finished')
+        logger.debug('Download finished')
         return subtitle
 
 
